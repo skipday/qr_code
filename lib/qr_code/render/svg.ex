@@ -44,7 +44,7 @@ defmodule QRCode.Render.Svg do
     |> construct_svg(settings)
   end
 
-  defp construct_body(matrix, svg, %SvgSettings{scale: scale}) do
+  defp construct_body(matrix, svg, %SvgSettings{scale: scale, center_mask: center_mask}) do
     {rank_matrix, _} = Matrix.size(matrix)
 
     %{
@@ -52,7 +52,7 @@ defmodule QRCode.Render.Svg do
       | body:
           matrix
           |> find_nonzero_element()
-          |> Enum.map(&create_rect(&1, scale)),
+          |> Enum.map(&create_rect(&1, scale, rank_matrix, center_mask)),
         rank_matrix: rank_matrix
     }
   end
@@ -93,7 +93,15 @@ defmodule QRCode.Render.Svg do
     }
   end
 
-  defp create_rect({x_pos, y_pos}, scale) do
+  defp create_rect({x_pos, y_pos}, _, rank_matrix, center_mask)
+       when div(rank_matrix, 2) - center_mask < x_pos and
+              x_pos < div(rank_matrix, 2) + center_mask and
+              div(rank_matrix, 2) - center_mask < y_pos and
+              y_pos < div(rank_matrix, 2) + center_mask do
+    {:rect, %{}, nil}
+  end
+
+  defp create_rect({x_pos, y_pos}, scale, _, _) do
     {:rect, %{width: scale, height: scale, x: scale * x_pos, y: scale * y_pos}, nil}
   end
 
