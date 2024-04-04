@@ -125,7 +125,8 @@ defmodule QRCode.Render.Svg do
   end
 
   @spec put_image(ImageSettings.t()) :: {:image, map(), nil}
-  defp put_image(%{ "data" => data, "size" => size, "client_type" => client_type }) when is_binary(data) and is_binary(client_type) and 0 < size do
+  defp put_image(%ImageSettings{data: data, size: size, client_type: client_type})
+       when is_binary(data) and is_binary(client_type) and 0 < size do
     {:image,
      %{
        href: "data:#{client_type}; base64, #{data}",
@@ -138,7 +139,7 @@ defmodule QRCode.Render.Svg do
   end
 
   @spec put_image(ImageSettings.t()) :: {:image, map(), nil}
-  defp put_image(%{ "path" => path, "size" => size }) when is_binary(path) and 0 < size do
+  defp put_image(%ImageSettings{path: path, size: size}) when is_binary(path) and 0 < size do
     {:image,
      %{
        href: encode_embedded_image(path),

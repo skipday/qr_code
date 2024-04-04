@@ -4,11 +4,11 @@ defmodule QRCode.Render.ImageSettings do
   """
 
   @type t :: %__MODULE__{
-    path: ExMaybe.t(binary()),
-    data: ExMaybe.t(binary()),
-    size: ExMaybe.t(pos_integer()),
-    client_type: ExMaybe.t(binary())
-  }
+          path: ExMaybe.t(binary()),
+          data: ExMaybe.t(binary()),
+          size: ExMaybe.t(pos_integer()),
+          client_type: ExMaybe.t(binary())
+        }
 
   defstruct path: nil,
             data: nil,
