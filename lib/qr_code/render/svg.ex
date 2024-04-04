@@ -124,8 +124,6 @@ defmodule QRCode.Render.Svg do
     {:g, %{fill: to_hex(color)}, body}
   end
 
-  defp put_image(nil), do: ""
-
   @spec put_image(ImageSettings.t()) :: {:image, map(), nil}
   defp put_image(%{ "data" => data, "size" => size, "client_type" => client_type }) when is_binary(data) and is_binary(client_type) and 0 < size do
     {:image,
@@ -151,6 +149,8 @@ defmodule QRCode.Render.Svg do
        transform: "translate(-#{size / 2}, -#{size / 2})"
      }, nil}
   end
+
+  defp put_image(%ImageSettings{}), do: ""
 
   defp encode_embedded_image(path_to_image) do
     encoded_image =
